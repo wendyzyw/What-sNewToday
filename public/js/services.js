@@ -5,6 +5,9 @@ angular.module('WhatNewToday')
 	
 	.service('editFactory', ['$resource', 'baseURL', function($resource, baseURL){
 		this.getEdit = function(){
-				return $resource(baseURL+"edit/:id",null, {'update':{method:'POST'}});
-			};
+			return $resource(baseURL+"edit/:id",null, {
+				'update':{method:'PUT'},
+				'delete':{method:'DELETE'}
+			});
+		};
 	}]);

@@ -45,23 +45,71 @@ angular.module('WhatNewToday')
 		}
 	}])
 	
-	.controller('EditController', ['$scope','editFactory', function($scope, editFactory){
-		$scope.edit = {title:"", description:""};
+	.controller('EditController', ['$scope','$stateParams','editFactory',  function($scope, $stateParams, editFactory){
+		if (!$stateParams.hasOwnProperty('id')){
+			$scope.edit = {title:"", description:"", picFile:"", date:null};
+		} else {
+			$scope.edit = editFactory.getEdit().get({id:$stateParams.id}).$promise.then(
+				function(response){
+					$scope.edit = response;
+					console.log(response);
+				},
+				function(response){
+					console.error(response);
+				}
+			);
+		}
 		
+		//if its new edit: pass in 1
+		//if its update edit: pass in 0
 		$scope.submitEdit = function(){
-			if ($scope.edit){
+			console.log($stateParams);
+			//check if this edit exists or not (if ia is not passed into stateparams)
+			if (!$stateParams.hasOwnProperty('id')) {
+				//timestamp the date to it 
+				$scope.edit.date = new Date();
 				editFactory.getEdit().save($scope.edit).$promise.then(
 					function(response){
-						alert(response);
+						console.log(response);
 					},
 					function(response){
-						alert("error");
+						console.log("error");
 						console.log("Error: "+response.status + " " + response.statusText);
 					}
 				);
-					
-				$scope.editForm.$setPristine();
-				$scope.edit = {title:"", description:""};
+			} else {
+				editFactory.getEdit().update({id:$stateParams.id}, $scope.edit).$promise.then(
+					function(response){
+						console.log("PUT done");
+					},
+					function(response){
+						console.error(response);
+					}
+				);
 			}
+			$scope.editForm.$setPristine();
+			$scope.edit = {title:"", description:"", picFile:"", date:null};
+		};
+	}])
+	
+	.controller('ListController', ['$scope', 'editFactory', '$state', '$stateParams', function($scope, editFactory, $state, $stateParams){
+		$scope.allEdits = editFactory.getEdit().query(
+			function(response){
+				$scope.allEdits = response;
+				console.log(response);
+			},
+			function(response){
+				alert(response.status + " " + response.statusText);
+			}
+		);
+				
+		$scope.deleteEdit = function(thisId){
+			editFactory.getEdit().delete({id:thisId}, function(response){
+				console.log("DELETE done");
+
+				//reload the page after success
+				$state.reload();
+			});
 		}
+		
 	}]);

@@ -1,3 +1,4 @@
+@import "../js/angular-upload/src/directives/btnUpload.min.css"; /* or .min.css */
 ul {list-style-type: none;}
 body {font-family: Verdana, sans-serif;}
 
@@ -96,8 +97,22 @@ body {font-family: Verdana, sans-serif;}
 
 .button-group {
 	padding-top: 10px;
+	padding-left: 50px; 
 }
 
 .btn {
 	alignment: center;
+}
+
+.right_btn {
+	float: right;
+	
+}
+
+.left_btn {
+	float: left;
+}
+
+#change_btn {
+	padding-top: 10px;
 }
