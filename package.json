@@ -1,0 +1,19 @@
+{
+  "name": "whatnewtoday",
+  "version": "1.0.0",
+  "description": "everyday logging",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wendyzyw/What-sNewToday.git"
+  },
+  "author": "wendy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wendyzyw/What-sNewToday/issues"
+  },
+  "homepage": "https://github.com/wendyzyw/What-sNewToday#readme"
+}

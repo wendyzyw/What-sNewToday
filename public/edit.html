@@ -1,0 +1,32 @@
+
+	<div class="container-fluid" ng-controller="EditController">
+		<form class="editForm form-horizontal" name="editForm" ng-submit="submitEdit()" novalidate>
+			<div class="form-group">
+			<!-- event editing -->
+				<div class="input-group mb-3">
+				    <div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon3">Event Title</span>
+				    </div>
+				    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" ng-model="edit.title" required>
+				</div>
+				
+				<div class="input-group mb-3">
+				    <div class="input-group-prepend">
+						<span class="input-group-text" id="prepend2">Event Description</span>
+				    </div>
+				    <textarea class="form-control" aria-label="With textarea" ng-model="edit.description"></textarea>
+				</div>
+				
+				<div class="input-group mb-3">
+					
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<button type="button submit" class="btn btn-primary">Submit</button>
+				<button type="button" class="btn btn-primary">Save for later</button>
+				<a ui-sref="app.editList" class="btn btn-success right_btn" role="button">Cancel</a>
+			</div>
+			
+		</form>
+	</div>

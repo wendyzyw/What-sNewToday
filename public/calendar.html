@@ -1,0 +1,27 @@
+<div class="calendar" ng-controller="CalendarController">
+		
+	<div class="month"> 
+	  <ul>
+		<li class="prev">&#10094;</li>
+		<li class="next">&#10095;</li>
+		<li>{{monthName}}<br><span style="font-size:18px">{{thisYear}}</span></li>
+	  </ul>
+	</div>
+
+	<ul class="weekdays">
+	  <li>Sun</li>
+	  <li>Mon</li>
+	  <li>Tue</li>
+	  <li>Wed</li>
+	  <li>Thur</li>
+	  <li>Fri</li>
+	  <li>Sat</li>
+	</ul>
+
+	<ul class="days"> 
+	  <li ng-repeat="blank in blankArr"></li>
+	  <li ng-repeat="day in daysArr"><a ui-sref="app.editList({day:day})"><span ng-class="{active: day == thisDay}">{{day}}</span></a></li>
+	  <!-- <li><span class="active">{{n}}</span></li> -->
+	</ul>
+	
+</div>
