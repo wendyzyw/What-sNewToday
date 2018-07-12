@@ -9,6 +9,8 @@ angular.module('WhatNewToday')
 		$scope.thisDay = $filter('date')(new Date(), 'dd');
 		$scope.monthName = '';
 		$scope.monthDays = 0;
+		//-2 get last two elements from sequence 
+		$scope.isoDate = $scope.thisYear+("0" + ($scope.thisMonth + 1)).slice(-2)+$scope.thisDay;
 		
 		switch ($scope.thisMonth) {
 			case 0 : $scope.monthDays = 31; $scope.monthName = "January"; break;
@@ -46,6 +48,7 @@ angular.module('WhatNewToday')
 	}])
 	
 	.controller('EditController', ['$scope','$stateParams','editFactory',  function($scope, $stateParams, editFactory){
+		console.log($stateParams);
 		if (!$stateParams.hasOwnProperty('id')){
 			$scope.edit = {title:"", description:"", picFile:"", date:null};
 		} else {
@@ -64,7 +67,7 @@ angular.module('WhatNewToday')
 		//if its update edit: pass in 0
 		$scope.submitEdit = function(){
 			console.log($stateParams);
-			//check if this edit exists or not (if ia is not passed into stateparams)
+			//check if this edit exists or not (if id is not passed into stateparams)
 			if (!$stateParams.hasOwnProperty('id')) {
 				//timestamp the date to it 
 				$scope.edit.date = new Date();
@@ -93,10 +96,10 @@ angular.module('WhatNewToday')
 	}])
 	
 	.controller('ListController', ['$scope', 'editFactory', '$state', '$stateParams', function($scope, editFactory, $state, $stateParams){
+		$scope.thisDate = $stateParams.date;
 		$scope.allEdits = editFactory.getEdit().query(
 			function(response){
 				$scope.allEdits = response;
-				console.log(response);
 			},
 			function(response){
 				alert(response.status + " " + response.statusText);
