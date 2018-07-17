@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('WhatNewToday')
-	.controller('CalendarController', ['$scope', '$filter', function($scope, $filter){
+	.controller('CalendarController', ['$scope', '$filter', '$state', function($scope, $filter, $state){
 		var d = new Date();
 		$scope.weekDay = d.getDay();
 		$scope.thisMonth = d.getMonth();
@@ -9,8 +9,11 @@ angular.module('WhatNewToday')
 		$scope.thisDay = $filter('date')(new Date(), 'dd');
 		$scope.monthName = '';
 		$scope.monthDays = 0;
-		//-2 get last two elements from sequence 
-		$scope.isoDate = $scope.thisYear+("0" + ($scope.thisMonth + 1)).slice(-2)+$scope.thisDay;
+		//-2 get last two elements from sequence
+		$scope.checkList = function(dayNum){
+            $scope.isoDate = $scope.thisYear+("0" + ($scope.thisMonth + 1)).slice(-2)+dayNum;
+			$state.go('app.editList',{'date': $scope.isoDate});
+		}
 		
 		switch ($scope.thisMonth) {
 			case 0 : $scope.monthDays = 31; $scope.monthName = "January"; break;
@@ -46,8 +49,9 @@ angular.module('WhatNewToday')
 			$scope.blankArr[i] = i+1;
 		}
 	}])
-	
-	.controller('EditController', ['$scope','$stateParams','editFactory',  function($scope, $stateParams, editFactory){
+
+    /***************************************************************/
+	.controller('EditController', ['$scope','$window','$stateParams','editFactory',  function($scope, $window, $stateParams, editFactory){
 		console.log($stateParams);
 		if (!$stateParams.hasOwnProperty('id')){
 			$scope.edit = {title:"", description:"", picFile:"", date:null};
@@ -62,15 +66,20 @@ angular.module('WhatNewToday')
 				}
 			);
 		}
-		
+
+		//return to list page for cancel button
+		$scope.cancelEdit = function(){
+			console.log($stateParams.date);
+            $window.location.href = '/#/edit?date='+$stateParams.date;
+		}
+
 		//if its new edit: pass in 1
 		//if its update edit: pass in 0
 		$scope.submitEdit = function(){
-			console.log($stateParams);
 			//check if this edit exists or not (if id is not passed into stateparams)
 			if (!$stateParams.hasOwnProperty('id')) {
 				//timestamp the date to it 
-				$scope.edit.date = new Date();
+				$scope.edit.date = $stateParams.date;
 				editFactory.getEdit().save($scope.edit).$promise.then(
 					function(response){
 						console.log(response);
@@ -92,12 +101,15 @@ angular.module('WhatNewToday')
 			}
 			$scope.editForm.$setPristine();
 			$scope.edit = {title:"", description:"", picFile:"", date:null};
+            $window.location.href = '/#/edit?date='+$stateParams.date;
 		};
 	}])
-	
+
+	/***************************************************************/
 	.controller('ListController', ['$scope', 'editFactory', '$state', '$stateParams', function($scope, editFactory, $state, $stateParams){
 		$scope.thisDate = $stateParams.date;
 		$scope.allEdits = editFactory.getEdit().query(
+			{'date': $stateParams.date},
 			function(response){
 				$scope.allEdits = response;
 			},
@@ -105,14 +117,23 @@ angular.module('WhatNewToday')
 				alert(response.status + " " + response.statusText);
 			}
 		);
-				
-		$scope.deleteEdit = function(thisId){
-			editFactory.getEdit().delete({id:thisId}, function(response){
-				console.log("DELETE done");
 
-				//reload the page after success
-				$state.reload();
-			});
-		}
+		$scope.allTags = editFactory.getTag().query(
+            function(response){
+                $scope.allTags = response;
+            },
+            function(response){
+                alert(response.status + " " + response.statusText);
+            }
+		)
+				
+		$scope.deleteEdit = function(thisId) {
+            editFactory.getEdit().delete({id: thisId}, function (response) {
+                console.log("DELETE done");
+
+                //reload the page after success
+                $state.reload();
+            });
+        }
 		
 	}]);

@@ -10,4 +10,11 @@ angular.module('WhatNewToday')
 				'delete':{method:'DELETE'}
 			});
 		};
+
+		this.getTag = function(){
+			return $resource(baseURL+"tag/:id", null, {
+                'update':{method:'PUT'},
+                'delete':{method:'DELETE'}
+			});
+		}
 	}]);

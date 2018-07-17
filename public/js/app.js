@@ -18,7 +18,7 @@ angular.module('WhatNewToday', ['ngResource', 'ui.router'])
 			})
 			//route from editList page to edit page
 			.state('app.editList', {
-				url: 'editList/:date',
+				url: 'edit?date',
 				views: {
 					'content@': {
 						templateUrl: 'editList.html',
@@ -29,6 +29,9 @@ angular.module('WhatNewToday', ['ngResource', 'ui.router'])
 			
 			.state('app.edit', {
 				url: 'edit/:id',
+				params: {
+					date: null,
+				},
 				views: {
 					'content@': {
 						templateUrl: 'edit.html',
@@ -38,7 +41,10 @@ angular.module('WhatNewToday', ['ngResource', 'ui.router'])
 			})
 			
 			.state('app.newEdit', {
-				url: 'edit/',
+				url: 'edit',
+				params: {
+					date: null,
+				},
 				views: {
 					'content@': {
 						templateUrl: 'edit.html',

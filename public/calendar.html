@@ -20,7 +20,7 @@
 
 	<ul class="days"> 
 	  <li ng-repeat="blank in blankArr"></li>
-	  <li ng-repeat="day in daysArr"><a ui-sref="app.editList({date:isoDate})"><span ng-class="{active: day == thisDay}">{{day}}</span></a></li>
+	  <li ng-repeat="day in daysArr" ng-click="checkList(day)" style="cursor: pointer;"><a><span ng-class="{active: day == thisDay}">{{day}}</span></a></li>
 	  <!-- <li><span class="active">{{n}}</span></li> -->
 	</ul>
 	

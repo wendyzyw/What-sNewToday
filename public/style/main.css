@@ -1,6 +1,10 @@
-@import "../js/angular-upload/src/directives/btnUpload.min.css"; /* or .min.css */
+/*@import "../js/angular-upload/src/directives/btnUpload.min.css"; !* or .min.css *!*/
 ul {list-style-type: none;}
 body {font-family: Verdana, sans-serif;}
+
+a {
+    text-decoration: none;
+}
 
 /* Month header */
 .month {
@@ -115,4 +119,57 @@ body {font-family: Verdana, sans-serif;}
 
 #change_btn {
 	padding-top: 10px;
+}
+
+/***************************************/
+.tag-list {
+    padding-bottom: 25px;
+}
+
+.edit-tag {
+    font-family: 'Roboto', sans-serif;
+}
+
+.tag-on .a {
+    text-decoration: none;
+}
+
+.tag-on {
+    font-size: 16px;
+    text-decoration: none;
+    background-color: #4CD964;
+    color: #FFFFFF;
+    padding: 5px 15px 5px 15px;
+    border-radius: 30px;
+    box-shadow: 0px 2px #F1F1F1;
+    cursor: pointer;
+    margin-right: 20px;
+    transition: .5s ease;
+    position: relative;
+}
+
+.tag-on .a:hover {
+    background-color: #29A23E;
+}
+
+.tag-off {
+    font-size: 16px;
+    text-decoration: none;
+    background-color: #8E8E93;
+    color: #FFFFFF;
+    padding: 5px 15px 5px 15px;
+    border-radius: 30px;
+    box-shadow: 0px 2px #F1F1F1;
+    cursor: pointer;
+    margin-right: 20px;
+    transition: .5s ease;
+}
+
+.tag-off:hover {
+    background-color: #69696E;
+}
+
+.tag-number {
+    font-weight: 800;
+    margin-right: 5px;
 }
