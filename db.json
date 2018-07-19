@@ -22,6 +22,7 @@
       "description": "new edit",
       "picFile": "",
       "date": "20180716",
+      "tags": ["academic" ,"work"],
       "id": 1
     },
     {
@@ -29,6 +30,7 @@
       "description": "15",
       "picFile": "",
       "date": "20180715",
+      "tags": ["academic"],
       "id": 2
     },
     {
@@ -36,6 +38,7 @@
       "description": "new2hhaah",
       "picFile": "",
       "date": "20180716",
+      "tags": ["work"],
       "id": 3
     }
   ],

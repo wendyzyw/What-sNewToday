@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('WhatNewToday', ['ngResource', 'ui.router'])
+angular.module('WhatNewToday', ['ui.bootstrap', 'ngResource', 'ui.router'])
 	.config(function($stateProvider, $urlRouterProvider){
 		$stateProvider
 			//route for home page

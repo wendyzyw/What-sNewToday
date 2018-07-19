@@ -1,4 +1,10 @@
 /*@import "../js/angular-upload/src/directives/btnUpload.min.css"; !* or .min.css *!*/
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.in {
+    background: rgba(0, 0, 0, 0.8);
+}
+
 ul {list-style-type: none;}
 body {font-family: Verdana, sans-serif;}
 
@@ -123,7 +129,7 @@ a {
 
 /***************************************/
 .tag-list {
-    padding-bottom: 25px;
+    padding-bottom: 50px;
 }
 
 .edit-tag {
@@ -145,7 +151,6 @@ a {
     cursor: pointer;
     margin-right: 20px;
     transition: .5s ease;
-    position: relative;
 }
 
 .tag-on .a:hover {

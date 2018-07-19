@@ -106,7 +106,8 @@ angular.module('WhatNewToday')
 	}])
 
 	/***************************************************************/
-	.controller('ListController', ['$scope', 'editFactory', '$state', '$stateParams', function($scope, editFactory, $state, $stateParams){
+	.controller('ListController', ['$scope', '$uibModal', '$document', 'editFactory', '$state', '$stateParams',
+        function($scope, $uibModal, $document, editFactory, $state, $stateParams){
 		$scope.thisDate = $stateParams.date;
 		$scope.allEdits = editFactory.getEdit().query(
 			{'date': $stateParams.date},
@@ -135,5 +136,49 @@ angular.module('WhatNewToday')
                 $state.reload();
             });
         }
-		
-	}]);
+
+        var $ctrl = this;
+        $ctrl.items = ['item1', 'item2', 'item3'];
+        //modal control logic
+        $ctrl.openAddTag = function(){
+            var modalInstance = $uibModal.open({
+                animation: false,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'tagAdderModal.html',
+                controller: 'ModalInstanceController',
+                controllerAs: '$ctrl',
+                resolve: {
+                    items: function(){
+                        return $ctrl.items;
+                    }
+                }
+            });
+
+            modalInstance.result.then(
+                function(selectedItem){
+                    $ctrl.selected = selectedItem;
+                },
+                function(){
+                    console.log("fail");
+                }
+            );
+
+        }
+	}])
+
+    .controller('ModalInstanceController', function($uibModalInstance, items){
+        var $ctrl = this;
+        $ctrl.items = items;
+        $ctrl.selected = {
+            item: $ctrl.items[0]
+        };
+
+        $ctrl.addTag = function(){
+            $uibModalInstance.close($ctrl.selected.item);
+        };
+
+        $ctrl.cancelAddTag = function(){
+            $uibModalInstance.dismiss('cancel');
+        };
+    });

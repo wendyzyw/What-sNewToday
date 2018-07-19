@@ -1,21 +1,45 @@
 
-	<main role="main" class="container" ng-controller="ListController">
+	<main role="main" class="container tag-container" ng-controller="ListController as $ctrl">
+        <script type="text/ng-template" id="tagAdderModal.html">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Add a new tag</h3>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <ul>
+                    <li ng-repeat="item in $ctrl.items">
+                        <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
+                    </li>
+                </ul>
+                Selected: <b>{{ $ctrl.selected.item }}</b>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="$ctrl.addTag()">
+                    Add</button>
+                <button class="btn btn-warning" type="button" ng-click="$ctrl.cancelAddTag()">
+                    Cancel</button>
+            </div>
+        </script>
 
       <div class="my-3 p-3 bg-white rounded box-shadow">
 
 		  <div class="tag-list">
 			  <div>
 				  <p>Filter by Tags: </p>
+                  <div style="float: right; ">
+                      <a role="button" ng-click="$ctrl.openAddTag()">
+                          <span class="glyphicon glyphicon-plus"></span>add tag
+                      </a>
+                  </div>
 			  </div>
-			  <div class="tag-on" ng-repeat="tag in allTags" style="position: absolute;">
-				  <a href="#" style="text-decoration: none;" style="position: relative;">
-					  <span class="tag-number">{{tag.number}}</span>
-					  {{tag.name}}
-				  </a>
-				  <button type="button" class="close" aria-label="Close">
-					  <span aria-hidden="true">&times;</span>
-				  </button>
-			  </div>
+              <div class="tag-on" ng-repeat="tag in allTags" style="float: left; display: block;">
+                  <a href="#" style="text-decoration: none;">
+                      <span class="tag-number">{{tag.number}}</span>
+                      {{tag.name}}
+                  </a>
+                  <button type="button" class="close" aria-label="Close" style="padding-left: 5px; ">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
 		  </div>
 	  
         <h6 class="border-bottom border-gray pb-2 mb-0">All entries</h6>
