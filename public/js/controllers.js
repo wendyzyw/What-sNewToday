@@ -106,18 +106,32 @@ angular.module('WhatNewToday')
 	}])
 
 	/***************************************************************/
-	.controller('ListController', ['$scope', '$uibModal', '$document', 'editFactory', '$state', '$stateParams',
-        function($scope, $uibModal, $document, editFactory, $state, $stateParams){
+	.controller('ListController', ['$scope', '$uibModal', '$filter', '$document', 'editFactory', '$state', '$stateParams',
+        function($scope, $uibModal, $filter, $document, editFactory, $state, $stateParams){
 		$scope.thisDate = $stateParams.date;
-		$scope.allEdits = editFactory.getEdit().query(
-			{'date': $stateParams.date},
-			function(response){
-				$scope.allEdits = response;
-			},
-			function(response){
-				alert(response.status + " " + response.statusText);
-			}
-		);
+        $scope.tagFilters = "";
+        if ($stateParams.date) {
+            $scope.allEdits = editFactory.getEdit().query(
+                {'date': $stateParams.date},
+                function (response) {
+                    $scope.allEdits = response;
+                },
+                function (response) {
+                    alert(response.status + " " + response.statusText);
+                }
+            );
+        }
+        if ($stateParams.tags){
+            $scope.allEdits = editFactory.getEdit().query(
+                {'tags': $stateParams.tags},
+                function (response) {
+                    $scope.allEdits = response;
+                },
+                function (response) {
+                    alert(response.status + " " + response.statusText);
+                }
+            );
+        }
 
 		$scope.allTags = editFactory.getTag().query(
             function(response){
@@ -132,53 +146,71 @@ angular.module('WhatNewToday')
             editFactory.getEdit().delete({id: thisId}, function (response) {
                 console.log("DELETE done");
 
-                //reload the page after success
                 $state.reload();
             });
         }
 
-        var $ctrl = this;
-        $ctrl.items = ['item1', 'item2', 'item3'];
+        $scope.deleteTag = function(tagId) {
+		    editFactory.getTag().delete({id: tagId}, function(response) {
+		        console.log("Delete tag");
+		        $state.reload();
+            });
+        }
+
+        $scope.newTag = {name: "" , color: "", number: 0};
         //modal control logic
-        $ctrl.openAddTag = function(){
+        $scope.openAddTag = function(){
             var modalInstance = $uibModal.open({
                 animation: false,
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
                 templateUrl: 'tagAdderModal.html',
                 controller: 'ModalInstanceController',
-                controllerAs: '$ctrl',
+                backdrop: false,
                 resolve: {
-                    items: function(){
-                        return $ctrl.items;
+                    newTag: function(){
+                        return $scope.newTag;
                     }
                 }
             });
 
             modalInstance.result.then(
-                function(selectedItem){
-                    $ctrl.selected = selectedItem;
+                function(newTag){
+                    //submit the new tag
+                    editFactory.getTag().save(newTag).$promise.then(
+                        function(response){
+                            //refresh tags list
+                            $state.reload();
+                        },
+                        function(response){
+                            console.log("error");
+                            console.log("Error: "+response.status + " " + response.statusText);
+                        }
+                    );
+                    // $scope.tagAdderForm.$setPristine();
+                    $scope.newTag = {name: "", color: "", number: 0};
                 },
                 function(){
-                    console.log("fail");
+                    console.log("cancel");
                 }
             );
+        };
 
+        $scope.addTagFilter = function(tagName){
+            // $scope.tagFilters.push(tagName);
+            $scope.tagFilters = tagName;
+            $state.go('app.editList',{'tags': $scope.tagFilters, 'date': ''});
         }
 	}])
 
-    .controller('ModalInstanceController', function($uibModalInstance, items){
-        var $ctrl = this;
-        $ctrl.items = items;
-        $ctrl.selected = {
-            item: $ctrl.items[0]
+    .controller('ModalInstanceController', function($scope, $uibModalInstance, newTag){
+        $scope.newTag = newTag;
+
+        $scope.addTag = function(){
+            $uibModalInstance.close($scope.newTag);
         };
 
-        $ctrl.addTag = function(){
-            $uibModalInstance.close($ctrl.selected.item);
-        };
-
-        $ctrl.cancelAddTag = function(){
+        $scope.cancelAddTag = function(){
             $uibModalInstance.dismiss('cancel');
         };
     });

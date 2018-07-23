@@ -5,17 +5,20 @@
                 <h3 class="modal-title" id="modal-title">Add a new tag</h3>
             </div>
             <div class="modal-body" id="modal-body">
-                <ul>
-                    <li ng-repeat="item in $ctrl.items">
-                        <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
-                    </li>
-                </ul>
-                Selected: <b>{{ $ctrl.selected.item }}</b>
+                <form name="tagAdderForm">
+                    <label>Tag name:
+                        <input type="text" name="input" ng-model="newTag.name" required ng-trim="false">
+                    </label>
+
+                    <label>Tag color:
+                        <input type="text" name="input" ng-model="newTag.color" required ng-trim="false">
+                    </label>
+                </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" type="button" ng-click="$ctrl.addTag()">
+                <button class="btn btn-primary" type="button" ng-click="addTag()">
                     Add</button>
-                <button class="btn btn-warning" type="button" ng-click="$ctrl.cancelAddTag()">
+                <button class="btn btn-warning" type="button" ng-click="cancelAddTag()">
                     Cancel</button>
             </div>
         </script>
@@ -26,17 +29,17 @@
 			  <div>
 				  <p>Filter by Tags: </p>
                   <div style="float: right; ">
-                      <a role="button" ng-click="$ctrl.openAddTag()">
+                      <a role="button" ng-click="openAddTag()" style="cursor: pointer;">
                           <span class="glyphicon glyphicon-plus"></span>add tag
                       </a>
                   </div>
 			  </div>
               <div class="tag-on" ng-repeat="tag in allTags" style="float: left; display: block;">
-                  <a href="#" style="text-decoration: none;">
+                  <a style="text-decoration: none;" ng-click="addTagFilter(tag.name)" style="cursor: pointer; ">
                       <span class="tag-number">{{tag.number}}</span>
                       {{tag.name}}
                   </a>
-                  <button type="button" class="close" aria-label="Close" style="padding-left: 5px; ">
+                  <button type="button" ng-click="deleteTag(tag.id)" class="close" aria-label="Close" style="padding-left: 5px; ">
                       <span aria-hidden="true">&times;</span>
                   </button>
               </div>

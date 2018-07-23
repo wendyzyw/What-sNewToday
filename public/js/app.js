@@ -18,7 +18,7 @@ angular.module('WhatNewToday', ['ui.bootstrap', 'ngResource', 'ui.router'])
 			})
 			//route from editList page to edit page
 			.state('app.editList', {
-				url: 'edit?date',
+				url: 'edit?date&tags',
 				views: {
 					'content@': {
 						templateUrl: 'editList.html',

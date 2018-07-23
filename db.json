@@ -22,7 +22,7 @@
       "description": "new edit",
       "picFile": "",
       "date": "20180716",
-      "tags": ["academic" ,"work"],
+      "tags": "academic",
       "id": 1
     },
     {
@@ -30,7 +30,7 @@
       "description": "15",
       "picFile": "",
       "date": "20180715",
-      "tags": ["academic"],
+      "tags": "academic",
       "id": 2
     },
     {
@@ -38,8 +38,16 @@
       "description": "new2hhaah",
       "picFile": "",
       "date": "20180716",
-      "tags": ["work"],
+      "tags": "work",
       "id": 3
+    },
+    {
+      "title": "13",
+      "description": "1323",
+      "picFile": "",
+      "date": "20180719",
+      "tags": "work",
+      "id": 4
     }
   ],
   "upload": [],
@@ -47,13 +55,13 @@
     {
       "id": 1,
       "name": "academic",
-      "number": 3,
+      "number": 2,
       "color": "fe3333"
     },
     {
       "id": 2,
       "name": "work",
-      "number": 4,
+      "number": 3,
       "color": "#afff33"
     }
   ]
