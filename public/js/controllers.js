@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('WhatNewToday')
-	.controller('CalendarController', ['$scope', '$filter', '$state', function($scope, $filter, $state){
+	.controller('CalendarController', ['$scope', '$filter', '$state', 'editFactory', function($scope, $filter, $state, editFactory){
 		var d = new Date();
 		$scope.weekDay = d.getDay();
 		$scope.thisMonth = d.getMonth();
@@ -10,16 +10,38 @@ angular.module('WhatNewToday')
 		$scope.monthName = '';
 		$scope.monthDays = 0;
 		//-2 get last two elements from sequence
+        $scope.getIosdate = function(dayNum){
+            return $scope.thisYear+("0" + ($scope.thisMonth + 1)).slice(-2)+("0" + dayNum).slice(-2);
+        }
+
 		$scope.checkList = function(dayNum){
-            $scope.isoDate = $scope.thisYear+("0" + ($scope.thisMonth + 1)).slice(-2)+dayNum;
+            $scope.isoDate = $scope.getIosdate(dayNum);
 			$state.go('app.editList',{'date': $scope.isoDate});
 		}
+
+		editFactory.getEdit().query(
+		    function(response){
+		        $scope.allEdits = response;
+		        //fetch tag color for each edit
+				$scope.editColors = {};
+				for (let i=0; i<$scope.allEdits.length; i++){
+					editFactory.getTag().get({'id':$scope.allEdits[i].tags}).$promise.then(
+						function(response2){
+							$scope.editColors[$scope.allEdits[i].id]= '#'+response2.color;
+						}
+					).catch(function(response3){console.log(response3);});
+				}
+            },
+            function(response){
+		        console.log(response);
+            }
+        );
 		
 		switch ($scope.thisMonth) {
 			case 0 : $scope.monthDays = 31; $scope.monthName = "January"; break;
-			case 1 : $scope.monthDays = 28; $scope.monthName = "Feburary"; break;
+			case 1 : $scope.monthDays = 28; $scope.monthName = "February"; break;
 			case 2 : $scope.monthDays = 31; $scope.monthName = "March"; break;
-			case 3 : $scope.monthDays = 30; $scope.monthName = "Aprial"; break;
+			case 3 : $scope.monthDays = 30; $scope.monthName = "April"; break;
 			case 4 : $scope.monthDays = 31; $scope.monthName = "May"; break;
 			case 5 : $scope.monthDays = 30; $scope.monthName = "June"; break;
 			case 6 : $scope.monthDays = 31; $scope.monthName = "July"; break;
@@ -48,6 +70,16 @@ angular.module('WhatNewToday')
 		for (i=0; i<$scope.blank; i++){
 			$scope.blankArr[i] = i+1;
 		}
+
+		$scope.toRows = function(dayArr, numDays){
+		    var i=0, rows=[];
+		    while(i<dayArr.length){
+		        i % numDays == 0 && rows.push([]);
+		        rows[rows.length-1].push(dayArr[i++]);
+            }
+            return rows
+        };
+		$scope.daysRows = $scope.toRows($scope.daysArr, 7);
 	}])
 
     /***************************************************************/
@@ -111,10 +143,28 @@ angular.module('WhatNewToday')
 		$scope.thisDate = $stateParams.date;
         $scope.tagFilters = "";
         if ($stateParams.date) {
-            $scope.allEdits = editFactory.getEdit().query(
+            editFactory.getEdit().query(
                 {'date': $stateParams.date},
                 function (response) {
                     $scope.allEdits = response;
+                    //fetch tag title for each edit
+                    $scope.editTags = {};
+                    for (let i=0; i<$scope.allEdits.length; i++){
+                        editFactory.getTag().get({'id':$scope.allEdits[i].tags}).$promise.then(
+                            function(response2){
+                                $scope.editTags[$scope.allEdits[i].id]= response2.name;
+                            }
+                        ).catch(function(response3){console.log(response3);});
+                    }
+                    //fetch tag color for each edit
+                    $scope.tagColors = {};
+                    for (let i=0; i<$scope.allEdits.length; i++){
+                        editFactory.getTag().get({'id':$scope.allEdits[i].tags}).$promise.then(
+                            function(response2){
+                                $scope.tagColors[$scope.allEdits[i].id]= '#'+response2.color;
+                            }
+                        ).catch(function(response3){console.log(response3);});
+                    }
                 },
                 function (response) {
                     alert(response.status + " " + response.statusText);
@@ -196,11 +246,12 @@ angular.module('WhatNewToday')
             );
         };
 
-        $scope.addTagFilter = function(tagName){
+        $scope.addTagFilter = function(tagId){
             // $scope.tagFilters.push(tagName);
-            $scope.tagFilters = tagName;
+            $scope.tagFilters = tagId;
             $state.go('app.editList',{'tags': $scope.tagFilters, 'date': ''});
         }
+
 	}])
 
     .controller('ModalInstanceController', function($scope, $uibModalInstance, newTag){
@@ -212,5 +263,12 @@ angular.module('WhatNewToday')
 
         $scope.cancelAddTag = function(){
             $uibModalInstance.dismiss('cancel');
+        };
+
+        $scope.options = {
+            required: true,
+            format: 'hex',
+            case: 'upper',
+			horizontal: true
         };
     });

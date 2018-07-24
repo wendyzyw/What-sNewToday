@@ -22,7 +22,7 @@
       "description": "new edit",
       "picFile": "",
       "date": "20180716",
-      "tags": "academic",
+      "tags": 1,
       "id": 1
     },
     {
@@ -30,7 +30,7 @@
       "description": "15",
       "picFile": "",
       "date": "20180715",
-      "tags": "academic",
+      "tags": 1,
       "id": 2
     },
     {
@@ -38,7 +38,7 @@
       "description": "new2hhaah",
       "picFile": "",
       "date": "20180716",
-      "tags": "work",
+      "tags": 2,
       "id": 3
     },
     {
@@ -46,8 +46,24 @@
       "description": "1323",
       "picFile": "",
       "date": "20180719",
-      "tags": "work",
+      "tags": 2,
       "id": 4
+    },
+    {
+      "title": "first",
+      "description": "first",
+      "picFile": "",
+      "date": "2018071",
+      "tags": 2,
+      "id": 5
+    },
+    {
+      "title": "asdfd",
+      "description": "sdfsdf",
+      "picFile": "",
+      "date": "20180720",
+      "tags": 2,
+      "id": 6
     }
   ],
   "upload": [],
@@ -59,10 +75,10 @@
       "color": "fe3333"
     },
     {
-      "id": 2,
       "name": "work",
-      "number": 3,
-      "color": "#afff33"
+      "color": "FF0090",
+      "number": 4,
+      "id": 2
     }
   ]
 }

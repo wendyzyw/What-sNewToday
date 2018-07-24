@@ -11,7 +11,7 @@
                     </label>
 
                     <label>Tag color:
-                        <input type="text" name="input" ng-model="newTag.color" required ng-trim="false">
+                        <color-picker ng-model="newTag.color" options="options" style="display: inline-block;"></color-picker>
                     </label>
                 </form>
             </div>
@@ -34,8 +34,8 @@
                       </a>
                   </div>
 			  </div>
-              <div class="tag-on" ng-repeat="tag in allTags" style="float: left; display: block;">
-                  <a style="text-decoration: none;" ng-click="addTagFilter(tag.name)" style="cursor: pointer; ">
+              <div class="tag-on" ng-repeat="tag in allTags" style="float: left; display: block; background-color: {{tag.color}};">
+                  <a style="text-decoration: none;" ng-click="addTagFilter(tag.id)" style="cursor: pointer; ">
                       <span class="tag-number">{{tag.number}}</span>
                       {{tag.name}}
                   </a>
@@ -51,10 +51,11 @@
 			<img alt="" class="mr-2 rounded">
 			<div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
 				<div class="left_btn">
-					<p>
-						<strong class="d-block text-gray-dark">{{edit.title}}</strong>
-						{{edit.description}}
-					</p>
+                    <div class="tag" ng-style="{'background-color':tagColors[edit.id]}">{{editTags[edit.id]}}</div>
+                    <p style="display: inline-block; padding-left: 40px;">
+                        <strong class="d-block text-gray-dark">{{edit.title}}</strong>
+                        {{edit.description}}
+                    </p>
 				</div>
 				
 				<div class="right_btn" id="change_btn">
